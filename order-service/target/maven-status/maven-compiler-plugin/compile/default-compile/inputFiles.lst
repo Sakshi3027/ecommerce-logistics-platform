@@ -1,0 +1,13 @@
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/OrderServiceApplication.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/controller/OrderController.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/dto/OrderItemRequest.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/dto/OrderItemResponse.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/dto/OrderRequest.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/dto/OrderResponse.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/entity/Order.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/entity/OrderItem.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/enums/OrderStatus.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/kafka/OrderEvent.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/kafka/OrderEventProducer.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/repository/OrderRepository.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/service/OrderService.java
