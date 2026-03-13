@@ -1,0 +1,313 @@
+{
+  "info": {
+    "name": "E-Commerce Logistics Platform",
+    "description": "Complete API collection for the E-Commerce Logistics Platform microservices. Covers Order, Inventory, Warehouse, Delivery, Notification, and Recommendation services.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🛒 Order Service (8081)",
+      "item": [
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8081/api/orders", "host": ["localhost"], "port": "8081", "path": ["api", "orders"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": 1,\n  \"shippingAddress\": \"123 Main St, New York, NY 10001\",\n  \"items\": [\n    {\n      \"productId\": 101,\n      \"productName\": \"iPhone 15 Pro\",\n      \"quantity\": 1,\n      \"unitPrice\": 999.99\n    },\n    {\n      \"productId\": 102,\n      \"productName\": \"MacBook Pro\",\n      \"quantity\": 1,\n      \"unitPrice\": 2499.99\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8081/api/orders/1", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "1"] }
+          }
+        },
+        {
+          "name": "Get Order by Number",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8081/api/orders/number/ORD-12345678", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "number", "ORD-12345678"] }
+          }
+        },
+        {
+          "name": "Get Orders by Customer",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8081/api/orders/customer/1", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "customer", "1"] }
+          }
+        },
+        {
+          "name": "Update Order Status → CONFIRMED",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "http://localhost:8081/api/orders/1/status?status=CONFIRMED", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "1", "status"], "query": [{ "key": "status", "value": "CONFIRMED" }] }
+          }
+        },
+        {
+          "name": "Update Order Status → SHIPPED",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "http://localhost:8081/api/orders/1/status?status=SHIPPED", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "1", "status"], "query": [{ "key": "status", "value": "SHIPPED" }] }
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "http://localhost:8081/api/orders/1/cancel", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "1", "cancel"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Inventory Service (8082)",
+      "item": [
+        {
+          "name": "Add Inventory",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8082/api/inventory", "host": ["localhost"], "port": "8082", "path": ["api", "inventory"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 101,\n  \"productName\": \"iPhone 15 Pro\",\n  \"quantity\": 50,\n  \"lowStockThreshold\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Inventory",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8082/api/inventory", "host": ["localhost"], "port": "8082", "path": ["api", "inventory"] }
+          }
+        },
+        {
+          "name": "Get Inventory by Product",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8082/api/inventory/product/101", "host": ["localhost"], "port": "8082", "path": ["api", "inventory", "product", "101"] }
+          }
+        },
+        {
+          "name": "Get Low Stock Items",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8082/api/inventory/low-stock", "host": ["localhost"], "port": "8082", "path": ["api", "inventory", "low-stock"] }
+          }
+        },
+        {
+          "name": "Get Out of Stock Items",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8082/api/inventory/out-of-stock", "host": ["localhost"], "port": "8082", "path": ["api", "inventory", "out-of-stock"] }
+          }
+        },
+        {
+          "name": "Add Stock",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8082/api/inventory/add-stock", "host": ["localhost"], "port": "8082", "path": ["api", "inventory", "add-stock"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 101,\n  \"quantity\": 100\n}"
+            }
+          }
+        },
+        {
+          "name": "Deduct Stock",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8082/api/inventory/deduct-stock", "host": ["localhost"], "port": "8082", "path": ["api", "inventory", "deduct-stock"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 101,\n  \"quantity\": 5\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏭 Warehouse Service (8083)",
+      "item": [
+        {
+          "name": "Create Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8083/api/warehouses", "host": ["localhost"], "port": "8083", "path": ["api", "warehouses"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouseCode\": \"WH-001\",\n  \"name\": \"East Coast Fulfillment Center\",\n  \"location\": \"123 Logistics Ave\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"totalCapacity\": 1000\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Warehouses",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8083/api/warehouses", "host": ["localhost"], "port": "8083", "path": ["api", "warehouses"] }
+          }
+        },
+        {
+          "name": "Add Product to Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8083/api/warehouses/products", "host": ["localhost"], "port": "8083", "path": ["api", "warehouses", "products"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouseId\": 1,\n  \"productId\": 101,\n  \"productName\": \"iPhone 15 Pro\",\n  \"quantity\": 100,\n  \"shelfLocation\": \"Aisle-3, Shelf-B\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Transfer Stock Between Warehouses",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8083/api/warehouses/transfer", "host": ["localhost"], "port": "8083", "path": ["api", "warehouses", "transfer"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceWarehouseId\": 1,\n  \"destinationWarehouseId\": 2,\n  \"productId\": 101,\n  \"productName\": \"iPhone 15 Pro\",\n  \"quantity\": 30,\n  \"notes\": \"Balancing stock across coasts\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Transfers",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8083/api/warehouses/transfers", "host": ["localhost"], "port": "8083", "path": ["api", "warehouses", "transfers"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🚚 Delivery Service (8084)",
+      "item": [
+        {
+          "name": "Register Driver",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8084/api/deliveries/drivers", "host": ["localhost"], "port": "8084", "path": ["api", "deliveries", "drivers"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Smith\",\n  \"phone\": \"555-0101\",\n  \"email\": \"john@driver.com\",\n  \"vehicleType\": \"Van\",\n  \"vehiclePlate\": \"NYC-1234\",\n  \"currentCity\": \"New York\",\n  \"currentLatitude\": 40.7128,\n  \"currentLongitude\": -74.0060\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Available Drivers",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8084/api/deliveries/drivers/available", "host": ["localhost"], "port": "8084", "path": ["api", "deliveries", "drivers", "available"] }
+          }
+        },
+        {
+          "name": "Create Delivery",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8084/api/deliveries", "host": ["localhost"], "port": "8084", "path": ["api", "deliveries"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": 1,\n  \"orderNumber\": \"ORD-12345678\",\n  \"customerId\": 1,\n  \"deliveryAddress\": \"123 Main St, New York, NY 10001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Auto Assign Driver",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "http://localhost:8084/api/deliveries/1/auto-assign", "host": ["localhost"], "port": "8084", "path": ["api", "deliveries", "1", "auto-assign"] }
+          }
+        },
+        {
+          "name": "Update Delivery Status → PICKED_UP",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "http://localhost:8084/api/deliveries/1/status?status=PICKED_UP", "host": ["localhost"], "port": "8084", "path": ["api", "deliveries", "1", "status"], "query": [{ "key": "status", "value": "PICKED_UP" }] }
+          }
+        },
+        {
+          "name": "Update Delivery Status → DELIVERED",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "http://localhost:8084/api/deliveries/1/status?status=DELIVERED", "host": ["localhost"], "port": "8084", "path": ["api", "deliveries", "1", "status"], "query": [{ "key": "status", "value": "DELIVERED" }] }
+          }
+        },
+        {
+          "name": "Get Pending Deliveries",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8084/api/deliveries/pending", "host": ["localhost"], "port": "8084", "path": ["api", "deliveries", "pending"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔔 Notification Service (8085)",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8085/api/notifications", "host": ["localhost"], "port": "8085", "path": ["api", "notifications"] }
+          }
+        },
+        {
+          "name": "Send Low Stock Alert",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "http://localhost:8085/api/notifications/low-stock?productName=iPhone 15 Pro&quantity=3", "host": ["localhost"], "port": "8085", "path": ["api", "notifications", "low-stock"], "query": [{ "key": "productName", "value": "iPhone 15 Pro" }, { "key": "quantity", "value": "3" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⭐ Recommendation Service (8086)",
+      "item": [
+        {
+          "name": "Get Trending Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8086/api/recommendations/trending", "host": ["localhost"], "port": "8086", "path": ["api", "recommendations", "trending"] }
+          }
+        },
+        {
+          "name": "Get Personalized Recommendations",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8086/api/recommendations/1", "host": ["localhost"], "port": "8086", "path": ["api", "recommendations", "1"] }
+          }
+        },
+        {
+          "name": "Get Similar Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8086/api/recommendations/similar/101", "host": ["localhost"], "port": "8086", "path": ["api", "recommendations", "similar", "101"] }
+          }
+        },
+        {
+          "name": "Record Product View",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:8086/api/recommendations/view", "host": ["localhost"], "port": "8086", "path": ["api", "recommendations", "view"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": 1,\n  \"productId\": 101,\n  \"productName\": \"iPhone 15 Pro\",\n  \"category\": \"Electronics\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
