@@ -7,6 +7,7 @@
 /Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/entity/Order.java
 /Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/entity/OrderItem.java
 /Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/enums/OrderStatus.java
+/Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/exception/GlobalExceptionHandler.java
 /Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/kafka/OrderEvent.java
 /Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/kafka/OrderEventProducer.java
 /Users/saksh/Documents/ecommerce-logistics-platform/order-service/src/main/java/com/ecommerce/order_service/repository/OrderRepository.java

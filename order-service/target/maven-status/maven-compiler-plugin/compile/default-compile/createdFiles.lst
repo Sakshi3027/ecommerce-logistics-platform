@@ -4,6 +4,7 @@ com/ecommerce/order_service/entity/OrderItem.class
 com/ecommerce/order_service/controller/OrderController.class
 com/ecommerce/order_service/dto/OrderResponse.class
 com/ecommerce/order_service/repository/OrderRepository.class
+com/ecommerce/order_service/exception/GlobalExceptionHandler.class
 com/ecommerce/order_service/entity/OrderItem$OrderItemBuilder.class
 com/ecommerce/order_service/enums/OrderStatus.class
 com/ecommerce/order_service/kafka/OrderEventProducer.class
