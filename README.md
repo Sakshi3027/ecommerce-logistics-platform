@@ -3,6 +3,20 @@
 A production-grade **microservices-based logistics platform** built with Java Spring Boot, Apache Kafka, and PostgreSQL. Designed to handle the core backend operations of large-scale e-commerce companies like Walmart, Amazon, and Target.
 
 ---
+## Live Demo
+
+API Gateway: https://api-gateway-456053639387.us-central1.run.app
+
+| Endpoint | URL |
+|---|---|
+| Create Order | POST /api/orders |
+| Get Order | GET /api/orders/{id} |
+| Check Inventory | GET /api/inventory/product/{id} |
+| Add Inventory | POST /api/inventory |
+| Get Trending | GET /api/recommendations/trending |
+| Get Notifications | GET /api/notifications |
+
+---
 
 ## Architecture Overview
 ```
