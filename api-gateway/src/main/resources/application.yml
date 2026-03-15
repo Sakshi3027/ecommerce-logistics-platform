@@ -1,45 +1,49 @@
 server:
-  port: 8080
+  port: 8090
 
 spring:
   application:
     name: api-gateway
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: order-service
-            uri: ${ORDER_SERVICE_URL:http://order-service:8081}
-            predicates:
-              - Path=/api/orders/**
+      server:
+        webmvc:
+          routes:
+            - id: order-service
+              uri: ${ORDER_SERVICE_URL:http://order-service:8081}
+              predicates:
+                - Path=/api/orders/**
 
-          - id: inventory-service
-            uri: ${INVENTORY_SERVICE_URL:http://inventory-service:8082}
-            predicates:
-              - Path=/api/inventory/**
+            - id: inventory-service
+              uri: ${INVENTORY_SERVICE_URL:http://inventory-service:8082}
+              predicates:
+                - Path=/api/inventory/**
 
-          - id: warehouse-service
-            uri: ${WAREHOUSE_SERVICE_URL:http://warehouse-service:8083}
-            predicates:
-              - Path=/api/warehouses/**
+            - id: warehouse-service
+              uri: ${WAREHOUSE_SERVICE_URL:http://warehouse-service:8083}
+              predicates:
+                - Path=/api/warehouses/**
 
-          - id: delivery-service
-            uri: ${DELIVERY_SERVICE_URL:http://delivery-service:8084}
-            predicates:
-              - Path=/api/deliveries/**
+            - id: delivery-service
+              uri: ${DELIVERY_SERVICE_URL:http://delivery-service:8084}
+              predicates:
+                - Path=/api/deliveries/**
 
-          - id: notification-service
-            uri: ${NOTIFICATION_SERVICE_URL:http://notification-service:8085}
-            predicates:
-              - Path=/api/notifications/**
+            - id: notification-service
+              uri: ${NOTIFICATION_SERVICE_URL:http://notification-service:8085}
+              predicates:
+                - Path=/api/notifications/**
 
-          - id: recommendation-service
-            uri: ${RECOMMENDATION_SERVICE_URL:http://recommendation-service:8086}
-            predicates:
-              - Path=/api/recommendations/**
+            - id: recommendation-service
+              uri: ${RECOMMENDATION_SERVICE_URL:http://recommendation-service:8086}
+              predicates:
+                - Path=/api/recommendations/**
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
+jwt:
+  secret: ecommerce-logistics-secret-key-must-be-at-least-256-bits-long-for-security
