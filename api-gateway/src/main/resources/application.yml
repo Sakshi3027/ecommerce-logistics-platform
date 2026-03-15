@@ -9,32 +9,32 @@ spring:
       mvc:
         routes:
           - id: order-service
-            uri: http://order-service:8081
+            uri: ${ORDER_SERVICE_URL:http://order-service:8081}
             predicates:
               - Path=/api/orders/**
 
           - id: inventory-service
-            uri: http://inventory-service:8082
+            uri: ${INVENTORY_SERVICE_URL:http://inventory-service:8082}
             predicates:
               - Path=/api/inventory/**
 
           - id: warehouse-service
-            uri: http://warehouse-service:8083
+            uri: ${WAREHOUSE_SERVICE_URL:http://warehouse-service:8083}
             predicates:
               - Path=/api/warehouses/**
 
           - id: delivery-service
-            uri: http://delivery-service:8084
+            uri: ${DELIVERY_SERVICE_URL:http://delivery-service:8084}
             predicates:
               - Path=/api/deliveries/**
 
           - id: notification-service
-            uri: http://notification-service:8085
+            uri: ${NOTIFICATION_SERVICE_URL:http://notification-service:8085}
             predicates:
               - Path=/api/notifications/**
 
           - id: recommendation-service
-            uri: http://recommendation-service:8086
+            uri: ${RECOMMENDATION_SERVICE_URL:http://recommendation-service:8086}
             predicates:
               - Path=/api/recommendations/**
 
