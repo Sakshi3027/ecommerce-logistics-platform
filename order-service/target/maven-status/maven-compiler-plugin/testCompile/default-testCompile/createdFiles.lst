@@ -1,2 +1,3 @@
 com/ecommerce/order_service/OrderServiceApplicationTests.class
 com/ecommerce/order_service/service/OrderServiceTest.class
+com/ecommerce/order_service/controller/OrderControllerTest.class
