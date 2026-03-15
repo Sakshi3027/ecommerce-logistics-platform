@@ -1,5 +1,7 @@
 # 🛒 E-Commerce Logistics Platform
 
+![CI Pipeline](https://github.com/Sakshi3027/ecommerce-logistics-platform/actions/workflows/ci.yml/badge.svg)
+
 A production-grade **microservices-based logistics platform** built with Java Spring Boot, Apache Kafka, and PostgreSQL. Designed to handle the core backend operations of large-scale e-commerce companies like Walmart, Amazon, and Target.
 
 ---
