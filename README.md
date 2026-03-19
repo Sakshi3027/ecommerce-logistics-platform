@@ -1,39 +1,62 @@
-# 🛒 E-Commerce Logistics Platform
+# E-Commerce Logistics Platform
 
 ![CI Pipeline](https://github.com/Sakshi3027/ecommerce-logistics-platform/actions/workflows/ci.yml/badge.svg)
 
 A production-grade **microservices-based logistics platform** built with Java Spring Boot, Apache Kafka, and PostgreSQL. Designed to handle the core backend operations of large-scale e-commerce companies like Walmart, Amazon, and Target.
 
 ---
-## Live Demo
 
-API Gateway: https://api-gateway-456053639387.us-central1.run.app
+## Live Demo (Deployed on Google Cloud Run)
 
-| Endpoint | URL |
-|---|---|
-| Create Order | POST /api/orders |
-| Get Order | GET /api/orders/{id} |
-| Check Inventory | GET /api/inventory/product/{id} |
-| Add Inventory | POST /api/inventory |
-| Get Trending | GET /api/recommendations/trending |
-| Get Notifications | GET /api/notifications |
+> **API Gateway:** https://api-gateway-456053639387.us-central1.run.app
+
+### Authentication
+All API endpoints are JWT protected. Get a token first:
+```bash
+curl -X POST https://api-gateway-456053639387.us-central1.run.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin123"}'
+```
+
+Then use the token in all requests:
+```bash
+curl https://api-gateway-456053639387.us-central1.run.app/api/orders/1 \
+  -H "Authorization: Bearer <your-token>"
+```
+
+| Endpoint | Method | Description |
+|---|---|---|
+| /api/auth/login | POST | Get JWT token |
+| /api/orders | POST | Create order |
+| /api/orders/{id} | GET | Get order by ID |
+| /api/inventory/product/{id} | GET | Check stock level |
+| /api/inventory | POST | Add inventory |
+| /api/recommendations/trending | GET | Get trending products |
+| /api/notifications | GET | Get notifications |
 
 ---
 
 ## Architecture Overview
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                     E-Commerce Logistics Platform                │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│   ┌──────────────┐     ┌──────────────┐     ┌───────────────┐  │
-│   │ Order Service│────▶│  Inventory   │     │  Warehouse    │  │
-│   │  Port: 8081  │     │   Service    │     │   Service     │  │
-│   │              │     │  Port: 8082  │     │  Port: 8083   │  │
-│   └──────┬───────┘     └──────────────┘     └───────────────┘  │
-│          │                                                       │
-│          │ Kafka Events (order-events)                          │
-│          ▼                                                       │
+│   ┌──────────────────────────────────────────────────────────┐  │
+│   │              API Gateway (Port 8080)                     │  │
+│   │         JWT Auth + Rate Limiting (60 req/min)            │  │
+│   └──────┬──────────┬──────────┬──────────┬─────────────────┘  │
+│          │          │          │          │                      │
+│          ▼          ▼          ▼          ▼                      │
+│   ┌──────────┐ ┌─────────┐ ┌────────┐ ┌──────────────────┐    │
+│   │  Order   │ │Inventory│ │Warehouse│ │    Delivery      │    │
+│   │ Service  │ │ Service │ │ Service │ │    Service       │    │
+│   │  :8081   │ │  :8082  │ │  :8083  │ │     :8084        │    │
+│   └────┬─────┘ └─────────┘ └────────┘ └──────────────────┘    │
+│        │                                                         │
+│        │ Kafka Events (order-events)                            │
+│        ▼                                                         │
 │   ┌──────────────────────────────────────────────────────────┐  │
 │   │                    Apache Kafka                          │  │
 │   │              (Event Streaming Platform)                  │  │
@@ -65,10 +88,35 @@ API Gateway: https://api-gateway-456053639387.us-central1.run.app
 | PostgreSQL 15 | Persistent data storage |
 | Redis 7 | Caching layer |
 | Docker + Docker Compose | Infrastructure orchestration |
+| Spring Cloud Gateway | API Gateway routing |
+| Spring Security + JWT | Authentication & Authorization |
 | Spring Data JPA + Hibernate | ORM and database access |
 | Swagger / OpenAPI 3 | API documentation |
+| JUnit 5 + Mockito | Unit and integration testing |
+| GitHub Actions | CI/CD Pipeline |
+| Google Cloud Run | Cloud deployment |
+| Google Cloud SQL | Managed PostgreSQL on GCP |
 | Lombok | Boilerplate reduction |
 | Maven | Build and dependency management |
+
+---
+
+## Security
+
+The API Gateway implements two layers of security:
+
+**JWT Authentication**
+- All routes protected except `/api/auth/**`
+- Stateless token-based auth — no sessions
+- Tokens expire after 24 hours
+- Role-based access (ADMIN, USER)
+
+**Rate Limiting**
+- 60 requests per minute per IP address
+- Returns `429 Too Many Requests` when exceeded
+- Rate limit headers on every response:
+  - `X-RateLimit-Limit: 60`
+  - `X-RateLimit-Remaining: N`
 
 ---
 
@@ -173,6 +221,7 @@ POST   /api/recommendations/view           → Record product view
 ## Event-Driven Architecture
 
 Every order action publishes a Kafka event that automatically triggers reactions across the platform:
+
 ```
 Customer places order
         │
@@ -192,6 +241,42 @@ Order confirmed
 
 ---
 
+## Testing
+
+12 automated tests across unit and integration layers:
+
+**Unit Tests (JUnit 5 + Mockito)** — test business logic in isolation:
+- `getOrderById_WhenOrderExists_ReturnsOrder`
+- `getOrderById_WhenOrderNotFound_ThrowsException`
+- `updateOrderStatus_WhenOrderExists_UpdatesStatus`
+- `cancelOrder_WhenOrderIsPending_CancelsSuccessfully`
+- `createOrder_CalculatesTotalCorrectly`
+
+**Integration Tests (MockMvc)** — test full HTTP layer:
+- `createOrder_ReturnsCreatedOrder`
+- `getOrderById_ReturnsOrder`
+- `getOrderById_WhenNotFound_Returns404`
+- `updateOrderStatus_ReturnsUpdatedOrder`
+- `cancelOrder_ReturnsCancelledOrder`
+- `createOrder_WithMissingFields_Returns400`
+
+Run tests:
+```bash
+cd order-service && mvn test
+```
+
+---
+
+## CI/CD Pipeline
+
+Every push to `main` automatically:
+1. Spins up PostgreSQL test database on GitHub servers
+2. Runs all 12 tests
+3. Builds Docker images for all 7 services
+4. Reports pass/fail — badge updates in real time
+
+---
+
 ## Local Setup
 
 ### Prerequisites
@@ -205,23 +290,13 @@ git clone https://github.com/Sakshi3027/ecommerce-logistics-platform.git
 cd ecommerce-logistics-platform
 ```
 
-### 2. Start infrastructure
+### 2. Start entire platform with one command
 ```bash
-docker-compose up -d
+docker-compose up
 ```
-This starts PostgreSQL, Kafka, Zookeeper, and Redis.
+This starts PostgreSQL, Kafka, Zookeeper, Redis, all 6 microservices and API Gateway automatically.
 
-### 3. Start all services (each in a separate terminal)
-```bash
-cd order-service && mvn spring-boot:run
-cd inventory-service && mvn spring-boot:run
-cd warehouse-service && mvn spring-boot:run
-cd delivery-service && mvn spring-boot:run
-cd notification-service && mvn spring-boot:run
-cd recommendation-service && mvn spring-boot:run
-```
-
-### 4. Verify all services are running
+### 3. Verify all services are running
 ```
 http://localhost:8081/actuator/health  → Order Service
 http://localhost:8082/actuator/health  → Inventory Service
@@ -246,13 +321,19 @@ http://localhost:8084/swagger-ui/index.html  → Delivery Service
 ---
 
 ## Sample API Flow
+
 ```bash
-# 1. Add inventory
+# 1. Get JWT token
+curl -X POST http://localhost:8090/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin123"}'
+
+# 2. Add inventory
 curl -X POST http://localhost:8082/api/inventory \
   -H "Content-Type: application/json" \
   -d '{"productId":101,"productName":"iPhone 15 Pro","quantity":50,"lowStockThreshold":10}'
 
-# 2. Place an order
+# 3. Place an order
 curl -X POST http://localhost:8081/api/orders \
   -H "Content-Type: application/json" \
   -d '{
@@ -261,21 +342,21 @@ curl -X POST http://localhost:8081/api/orders \
     "items": [{"productId": 101, "productName": "iPhone 15 Pro", "quantity": 1, "unitPrice": 999.99}]
   }'
 
-# 3. Check inventory was auto-deducted (Kafka magic!)
+# 4. Check inventory was auto-deducted (Kafka magic!)
 curl http://localhost:8082/api/inventory/product/101
 
-# 4. Register a driver
+# 5. Register a driver
 curl -X POST http://localhost:8084/api/deliveries/drivers \
   -H "Content-Type: application/json" \
   -d '{"name":"John Smith","phone":"555-0101","email":"john@driver.com","vehicleType":"Van","vehiclePlate":"NYC-1234","currentCity":"New York"}'
 
-# 5. Auto-assign driver to delivery
+# 6. Auto-assign driver to delivery
 curl -X POST http://localhost:8084/api/deliveries/1/auto-assign
 
-# 6. Check notifications were sent
+# 7. Check notifications were sent
 curl http://localhost:8085/api/notifications
 
-# 7. Get trending products
+# 8. Get trending products
 curl http://localhost:8086/api/recommendations/trending
 ```
 
@@ -300,6 +381,7 @@ Each service owns its own database (Database-per-Service pattern):
 - **Database per Service** — each microservice owns its data, zero shared databases
 - **Event-Driven Architecture** — services communicate via Kafka, fully decoupled
 - **SAGA Pattern** — distributed transactions handled through compensating events
+- **API Gateway Pattern** — single entry point with JWT auth and rate limiting
 - **Repository Pattern** — clean separation between business logic and data access
 - **DTO Pattern** — request/response objects keep API contracts stable
 - **Builder Pattern** — immutable object construction via Lombok @Builder
@@ -307,5 +389,5 @@ Each service owns its own database (Database-per-Service pattern):
 ---
 
 ## Author
-**Sakshi** 
-[GitHub](https://github.com/Sakshi3027)
+
+**Sakshi** — [GitHub](https://github.com/Sakshi3027)
