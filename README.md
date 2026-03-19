@@ -1,8 +1,17 @@
 # E-Commerce Logistics Platform
 
 ![CI Pipeline](https://github.com/Sakshi3027/ecommerce-logistics-platform/actions/workflows/ci.yml/badge.svg)
+![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-brightgreen?logo=springboot)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-3.9-black?logo=apachekafka)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)
+![GCP](https://img.shields.io/badge/Deployed%20on-GCP-4285F4?logo=googlecloud)
+![JWT](https://img.shields.io/badge/Auth-JWT-000000?logo=jsonwebtokens)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+```
 
-A production-grade **microservices-based logistics platform** built with Java Spring Boot, Apache Kafka, and PostgreSQL. Designed to handle the core backend operations of large-scale e-commerce companies like Walmart, Amazon, and Target.
+A production-grade microservices-based logistics platform built with Java Spring Boot, Apache Kafka, and PostgreSQL. Designed to handle the core backend operations of large-scale e-commerce companies like Walmart, Amazon, and Target.
 
 ---
 
